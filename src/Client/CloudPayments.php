@@ -16,13 +16,13 @@ class CloudPayments
 {
 
     /**
-     * Base url of cloudpayments UZ domain
+     * Base url of cloud payments UZ domain
      * @const string
      */
     public const CLOUD_PAYMENTS_UZ_URL = 'https://api.cloudpayments.uz';
 
     /**
-     * Base url of cloudpayments RU domain
+     * Base url of cloud payments RU domain
      * @const string
      */
     public const CLOUD_PAYMENTS_RU_URL = 'https://api.cloudpayments.ru';
@@ -89,10 +89,10 @@ class CloudPayments
     /**
      * Make a test request
      *
-     * @param array $data
+     * @param array|object $data
      * @return object
      */
-    public function sendTestRequest(array $data): object
+    public function sendTestRequest(array|object $data): object
     {
         return $this->httpClient->sendRequest(self::METHOD_TEST, $data);
     }
@@ -101,11 +101,11 @@ class CloudPayments
     /**
      * Make a one-time payment using card details.
      *
-     * @param array $cardPaymentData
-     * @link https://developers.cloudpayments.ru/en/#payment-schemes
+     * @param array|object $cardPaymentData
      * @return object
+     * @link https://developers.cloudpayments.ru/en/#payment-schemes
      */
-    public function makeCardPaymentAutomatic(array $cardPaymentData): object
+    public function makeCardPaymentAutomatic(array|object $cardPaymentData): object
     {
         return $this->httpClient->sendRequest(self::CHARGE_CARD, $cardPaymentData);
     }
@@ -113,11 +113,11 @@ class CloudPayments
     /**
      * Make a two-step payment using card details.
      *
-     * @param array $cardPaymentData
-     * @link https://developers.cloudpayments.ru/en/#payment-schemes
+     * @param array|object $cardPaymentData
      * @return object
+     * @link https://developers.cloudpayments.ru/en/#payment-schemes
      */
-    public function makeCardPaymentManual(array $cardPaymentData): object
+    public function makeCardPaymentManual(array|object $cardPaymentData): object
     {
         return $this->httpClient->sendRequest(self::AUTH_CARD, $cardPaymentData);
     }
@@ -125,12 +125,12 @@ class CloudPayments
     /**
      * Make a payment using card details.
      *
-     * @param array $paymentData
+     * @param array|object $paymentData
      * @param bool $requireConfirmation
-     * @link https://developers.cloudpayments.ru/en/#payment-schemes
      * @return object
+     * @link https://developers.cloudpayments.ru/en/#payment-schemes
      */
-    public function makeCardPayment(array $paymentData, bool $requireConfirmation = false): object
+    public function makeCardPayment(array|object $paymentData, bool $requireConfirmation = false): object
     {
         if ($requireConfirmation) {
             return $this->makeCardPaymentManual($paymentData);
@@ -142,11 +142,11 @@ class CloudPayments
     /**
      * Make a one-step payment using a token.
      *
-     * @param array $tokenPaymentData
-     * @link https://developers.cloudpayments.ru/en/#payment-schemes
+     * @param array|object $tokenPaymentData
      * @return object
+     * @link https://developers.cloudpayments.ru/en/#payment-schemes
      */
-    public function makeTokenPaymentAutomatic(array $tokenPaymentData): object
+    public function makeTokenPaymentAutomatic(array|object $tokenPaymentData): object
     {
         return $this->httpClient->sendRequest(self::CHARGE_TOKEN, $tokenPaymentData);
     }
@@ -154,11 +154,11 @@ class CloudPayments
     /**
      * Make a two-step payment using a token (recurring).
      *
-     * @param array $tokenPaymentData
-     * @link https://developers.cloudpayments.ru/en/#payment-schemes
+     * @param array|object $tokenPaymentData
      * @return object
+     * @link https://developers.cloudpayments.ru/en/#payment-schemes
      */
-    public function makeTokenPaymentManual(array $tokenPaymentData): object
+    public function makeTokenPaymentManual(array|object $tokenPaymentData): object
     {
         return $this->httpClient->sendRequest(self::AUTH_TOKEN, $tokenPaymentData);
     }
@@ -166,12 +166,12 @@ class CloudPayments
     /**
      * Make a payment using a saved card token.
      *
-     * @param array $tokenPaymentData
+     * @param array|object $tokenPaymentData
      * @param bool $requireConfirmation
-     * @link https://developers.cloudpayments.ru/en/#payment-schemes
      * @return object
+     * @link https://developers.cloudpayments.ru/en/#payment-schemes
      */
-    public function makeTokenPayment(array $tokenPaymentData, bool $requireConfirmation = false): object
+    public function makeTokenPayment(array|object $tokenPaymentData, bool $requireConfirmation = false): object
     {
         if ($requireConfirmation) {
             return $this->makeTokenPaymentManual($tokenPaymentData);
@@ -253,11 +253,11 @@ class CloudPayments
     /**
      * Initiate a payout using card details.
      *
-     * @param array $payoutData
-     * @link https://developers.cloudpayments.ru/en/#payout-by-a-cryptogram
+     * @param array|object $payoutData
      * @return object
+     * @link https://developers.cloudpayments.ru/en/#payout-by-a-cryptogram
      */
-    public function initiatePayout(array $payoutData): object
+    public function initiatePayout(array|object $payoutData): object
     {
         $endpoint = '/payments/cards/topup';
         return $this->httpClient->sendRequest($endpoint, $payoutData);

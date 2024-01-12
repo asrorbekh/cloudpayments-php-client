@@ -37,13 +37,13 @@ class HttpClient
     /**
      * Sends an HTTP request to the CloudPayments API.
      *
-     * @param string|null $url    Relative URL for the API endpoint.
-     * @param array|null  $data   Data to be sent in the request body.
-     * @param string      $method HTTP method for the request (default is "POST").
+     * @param string|null $url Relative URL for the API endpoint.
+     * @param array|object|null $data Data to be sent in the request body.
+     * @param string $method HTTP method for the request (default is "POST").
      *
      * @return object Response object with status, data, message, and code.
      */
-    public function sendRequest(?string $url = null, ?array $data = null, string $method = "POST"): object
+    public function sendRequest(?string $url = null, array|object|null $data = null, string $method = "POST"): object
     {
         $responseObject = new \stdClass();
         $responseObject->status = false;

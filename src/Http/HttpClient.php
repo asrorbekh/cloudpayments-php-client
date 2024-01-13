@@ -20,16 +20,16 @@ class HttpClient
     /**
      * HttpClient constructor.
      *
-     * @param string|null $publicKey   CloudPayments public key.
-     * @param string|null $apiSecret   CloudPayments API secret key.
-     * @param string|null $apiUrl      CloudPayments API base URL.
-     * @param bool|null   $enableSSL   Flag indicating whether SSL verification is enabled.
+     * @param string|null $publicKey CloudPayments public key.
+     * @param string|null $apiSecret CloudPayments API secret key.
+     * @param string|null $apiUrl CloudPayments API base URL.
+     * @param bool|null $enableSSL Flag indicating whether SSL verification is enabled.
      */
     public function __construct(
         private readonly string|null $publicKey = null,
         private readonly string|null $apiSecret = null,
         private readonly string|null $apiUrl = null,
-        private readonly bool|null   $enableSSL = true,
+        private readonly bool|null $enableSSL = true,
     ) {
         $this->curl = new Curl();
     }
@@ -49,7 +49,7 @@ class HttpClient
         $responseObject->status = false;
         $responseObject->data = null;
 
-        if(!$data) {
+        if (!$data) {
             $responseObject->message = 'Invalid data params.';
             $responseObject->code = 400;
             return $responseObject;
@@ -82,7 +82,7 @@ class HttpClient
             $responseObject->code = $this->curl->getHttpStatusCode();
             $responseObject->data = $response;
 
-            if($this->curl->error) {
+            if ($this->curl->error) {
                 $responseObject->message = $this->curl->getCurlErrorMessage();
                 $responseObject->code = $this->curl->getCurlErrorCode();
             } else {

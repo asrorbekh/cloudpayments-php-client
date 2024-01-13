@@ -208,7 +208,7 @@ class CloudPayments
      * @param string $transactionId
      * @param float $amount
      * @return object
-     * @link https://developers.cloudpayments.ru/en/#payment-by-a-token-recurring
+     * @link https://developers.cloudpayments.ru/en/#payment-confirmation
      */
     public function confirmPayment(string $transactionId, float $amount): object
     {
@@ -695,25 +695,5 @@ class CloudPayments
     public function setLocalization(string $cultureName): void
     {
         $this->cultureName = $cultureName;
-    }
-
-    /**
-     * Creates a long record for CloudPayments API.
-     *
-     * @param string $ticketNumber Ticket number for the record.
-     * @param string $bookingRef Booking reference for the record.
-     * @param array $legs Array of legs for the record.
-     * @param array $passengers Array of passengers for the record.
-     *
-     * @return array CloudPayments long record.
-     */
-    public function createLongRecord(string $ticketNumber, string $bookingRef, array $legs, array $passengers): array
-    {
-        return [
-            "TicketNumber" => $ticketNumber,
-            "BookingRef" => $bookingRef,
-            "Legs" => $legs,
-            "Passengers" => $passengers,
-        ];
     }
 }

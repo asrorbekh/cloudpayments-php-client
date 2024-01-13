@@ -81,8 +81,12 @@ class CloudPayments
      * @param string $apiUrl
      * @param bool $enableSSL
      */
-    public function __construct(string $publicKey, string $apiSecret, string $apiUrl = self::CLOUD_PAYMENTS_RU_URL, bool $enableSSL = true)
-    {
+    public function __construct(
+        string $publicKey,
+        string $apiSecret,
+        string $apiUrl = self::CLOUD_PAYMENTS_RU_URL,
+        bool $enableSSL = true
+    ) {
         $this->httpClient = new HttpClient($publicKey, $apiSecret, $apiUrl, $enableSSL);
     }
 
@@ -185,8 +189,8 @@ class CloudPayments
      *
      * @param string $transactionId
      * @param string $paRes
-     * @link https://developers.cloudpayments.ru/en/#3-d-secure-processing
      * @return object The response from the CloudPayments API.
+     * @link https://developers.cloudpayments.ru/en/#3-d-secure-processing
      */
     public function complete3DSecurePayment(string $transactionId, string $paRes): object
     {
@@ -203,8 +207,8 @@ class CloudPayments
      *
      * @param string $transactionId
      * @param float $amount
-     * @link https://developers.cloudpayments.ru/en/#payment-by-a-token-recurring
      * @return object
+     * @link https://developers.cloudpayments.ru/en/#payment-by-a-token-recurring
      */
     public function confirmPayment(string $transactionId, float $amount): object
     {
@@ -220,8 +224,8 @@ class CloudPayments
      * Void a payment with a specific transaction ID.
      *
      * @param string $transactionId
-     * @link https://developers.cloudpayments.ru/en/#payment-confirmation
      * @return object
+     * @link https://developers.cloudpayments.ru/en/#payment-confirmation
      */
     public function voidPayment(string $transactionId): object
     {
@@ -237,8 +241,8 @@ class CloudPayments
      *
      * @param string $transactionId
      * @param float $amount
-     * @link https://developers.cloudpayments.ru/en/#refund
      * @return object
+     * @link https://developers.cloudpayments.ru/en/#refund
      */
     public function refundPayment(string $transactionId, float $amount): object
     {
@@ -273,11 +277,18 @@ class CloudPayments
      * @param string|null $payer
      * @param string|null $receiver
      * @param string|null $invoiceId
-     * @link https://developers.cloudpayments.ru/en/#payout-by-a-token
      * @return object
+     * @link https://developers.cloudpayments.ru/en/#payout-by-a-token
      */
-    public function initiatePayoutByToken(string $token, float $amount, string $accountId, string $currency, ?string $payer = null, ?string $receiver = null, ?string $invoiceId = null): object
-    {
+    public function initiatePayoutByToken(
+        string $token,
+        float $amount,
+        string $accountId,
+        string $currency,
+        ?string $payer = null,
+        ?string $receiver = null,
+        ?string $invoiceId = null
+    ): object {
         $endpoint = '/payments/token/topup';
         $requestData = [
             "Token" => $token,
@@ -295,8 +306,8 @@ class CloudPayments
      * Get details for a specific transaction.
      *
      * @param string $transactionId
-     * @link https://developers.cloudpayments.ru/en/#transaction-details
      * @return object
+     * @link https://developers.cloudpayments.ru/en/#transaction-details
      */
     public function getTransactionDetails(string $transactionId): object
     {
@@ -311,8 +322,8 @@ class CloudPayments
      * Check the status of a payment using the invoice ID.
      *
      * @param string $invoiceId
-     * @link https://developers.cloudpayments.ru/en/#payment-status-check
      * @return object
+     * @link https://developers.cloudpayments.ru/en/#payment-status-check
      */
     public function checkPaymentStatus(string $invoiceId): object
     {
@@ -328,8 +339,8 @@ class CloudPayments
      *
      * @param string $date
      * @param string $timeZone
-     * @link https://developers.cloudpayments.ru/en/#transaction-list
      * @return object
+     * @link https://developers.cloudpayments.ru/en/#transaction-list
      */
     public function getTransactionsForDay(string $date, string $timeZone = "UTC"): object
     {
@@ -349,11 +360,16 @@ class CloudPayments
      * @param int $pageNumber
      * @param string $timeZone
      * @param array $statuses
-     * @link https://developers.cloudpayments.ru/en/#transaction-list
      * @return object
+     * @link https://developers.cloudpayments.ru/en/#transaction-list
      */
-    public function getTransactionsForPeriod(string $startDate, string $endDate, int $pageNumber, string $timeZone = "UTC", array $statuses = []): object
-    {
+    public function getTransactionsForPeriod(
+        string $startDate,
+        string $endDate,
+        int $pageNumber,
+        string $timeZone = "UTC",
+        array $statuses = []
+    ): object {
         $endpoint = '/v2/payments/list';
         $requestData = [
             "CreatedDateGte" => $startDate,
@@ -369,8 +385,8 @@ class CloudPayments
      * Get a list of payment tokens.
      *
      * @param int $pageNumber
-     * @link https://developers.cloudpayments.ru/en/#token-list
      * @return object
+     * @link https://developers.cloudpayments.ru/en/#token-list
      */
     public function getPaymentTokens(int $pageNumber): object
     {
@@ -396,11 +412,23 @@ class CloudPayments
      * @param int $period
      * @param int|null $maxPeriods
      * @param string|null $customerReceipt
-     * @link https://developers.cloudpayments.ru/en/#creation-of-subscriptions-on-recurrent-payments
      * @return object
+     * @link https://developers.cloudpayments.ru/en/#creation-of-subscriptions-on-recurrent-payments
      */
-    public function createSubscription(string $token, string $accountId, string $description, string $email, float $amount, string $currency, bool $requireConfirmation, string $startDate, string $interval, int $period, ?int $maxPeriods = null, ?string $customerReceipt = null): object
-    {
+    public function createSubscription(
+        string $token,
+        string $accountId,
+        string $description,
+        string $email,
+        float $amount,
+        string $currency,
+        bool $requireConfirmation,
+        string $startDate,
+        string $interval,
+        int $period,
+        ?int $maxPeriods = null,
+        ?string $customerReceipt = null
+    ): object {
         $endpoint = '/subscriptions/create';
         $requestData = [
             "Token" => $token,
@@ -423,8 +451,8 @@ class CloudPayments
      * Get information about a subscription.
      *
      * @param string $subscriptionId
-     * @link https://developers.cloudpayments.ru/en/#subscription-details
      * @return object
+     * @link https://developers.cloudpayments.ru/en/#subscription-details
      */
     public function getSubscriptionInfo(string $subscriptionId): object
     {
@@ -439,8 +467,8 @@ class CloudPayments
      * Find subscriptions for a specific account ID.
      *
      * @param string $accountId
-     * @link https://developers.cloudpayments.ru/en/#subscriptions-search
      * @return object
+     * @link https://developers.cloudpayments.ru/en/#subscriptions-search
      */
     public function findSubscriptions(string $accountId): object
     {
@@ -464,11 +492,21 @@ class CloudPayments
      * @param int|null $period
      * @param int|null $maxPeriods
      * @param string|null $customerReceipt
-     * @link https://developers.cloudpayments.ru/en/#recurrent-payments-subscription-change
      * @return object
+     * @link https://developers.cloudpayments.ru/en/#recurrent-payments-subscription-change
      */
-    public function updateSubscription(string $subscriptionId, ?string $description = null, ?float $amount = null, ?string $currency = null, ?bool $requireConfirmation = null, ?string $startDate = null, ?string $interval = null, ?int $period = null, ?int $maxPeriods = null, ?string $customerReceipt = null): object
-    {
+    public function updateSubscription(
+        string $subscriptionId,
+        ?string $description = null,
+        ?float $amount = null,
+        ?string $currency = null,
+        ?bool $requireConfirmation = null,
+        ?string $startDate = null,
+        ?string $interval = null,
+        ?int $period = null,
+        ?int $maxPeriods = null,
+        ?string $customerReceipt = null
+    ): object {
         $endpoint = '/subscriptions/update';
         $requestData = [
             "Id" => $subscriptionId,
@@ -490,8 +528,8 @@ class CloudPayments
      * Cancel a subscription.
      *
      * @param string $subscriptionId
-     * @link https://developers.cloudpayments.ru/en/#subscription-on-recurrent-payments-cancellation
      * @return object
+     * @link https://developers.cloudpayments.ru/en/#subscription-on-recurrent-payments-cancellation
      */
     public function cancelSubscription(string $subscriptionId): object
     {
@@ -521,11 +559,27 @@ class CloudPayments
      * @param string|null $successRedirectUrl
      * @param string|null $failRedirectUrl
      * @param array|null $jsonData
-     * @link https://developers.cloudpayments.ru/en/#invoice-creation-on-email
      * @return object
+     * @link https://developers.cloudpayments.ru/en/#invoice-creation-on-email
      */
-    public function createInvoice(float $amount, string $currency, string $description, string $email, bool $requireConfirmation, bool $sendEmail, ?string $invoiceId = null, ?string $accountId = null, ?string $offerUri = null, ?string $phone = null, ?bool $sendSms = null, ?bool $sendViber = null, ?string $subscriptionBehavior = null, ?string $successRedirectUrl = null, ?string $failRedirectUrl = null, ?array $jsonData = null): object
-    {
+    public function createInvoice(
+        float $amount,
+        string $currency,
+        string $description,
+        string $email,
+        bool $requireConfirmation,
+        bool $sendEmail,
+        ?string $invoiceId = null,
+        ?string $accountId = null,
+        ?string $offerUri = null,
+        ?string $phone = null,
+        ?bool $sendSms = null,
+        ?bool $sendViber = null,
+        ?string $subscriptionBehavior = null,
+        ?string $successRedirectUrl = null,
+        ?string $failRedirectUrl = null,
+        ?array $jsonData = null
+    ): object {
         $endpoint = '/orders/create';
         $requestData = [
             "Amount" => $amount,
@@ -553,8 +607,8 @@ class CloudPayments
      * Cancel an order for a one-time payment.
      *
      * @param string $orderId
-     * @link https://developers.cloudpayments.ru/en/#created-invoice-cancellation
      * @return object
+     * @link https://developers.cloudpayments.ru/en/#created-invoice-cancellation
      */
     public function cancelOrder(string $orderId): object
     {
@@ -569,8 +623,8 @@ class CloudPayments
      * View notification settings for a specific notification type.
      *
      * @param string $notificationType
-     * @link https://developers.cloudpayments.ru/en/#view-of-notification-settings
      * @return object
+     * @link https://developers.cloudpayments.ru/en/#view-of-notification-settings
      */
     public function viewNotificationSettings(string $notificationType): object
     {
@@ -590,11 +644,17 @@ class CloudPayments
      * @param string|null $httpMethod HTTP method for the notification.
      * @param string|null $encoding Encoding for the notification.
      * @param string|null $format Format of the notification.
-     * @link https://developers.cloudpayments.ru/en/#change-of-notification-settings
      * @return object Response from the CloudPayments API.
+     * @link https://developers.cloudpayments.ru/en/#change-of-notification-settings
      */
-    public function updateNotificationSettings(string $notificationType, bool $isEnabled = null, string $address = null, string $httpMethod = null, string $encoding = null, string $format = null): object
-    {
+    public function updateNotificationSettings(
+        string $notificationType,
+        bool $isEnabled = null,
+        string $address = null,
+        string $httpMethod = null,
+        string $encoding = null,
+        string $format = null
+    ): object {
         $endpoint = "/site/notifications/$notificationType/update";
         $requestData = [
             "Type" => $notificationType,
@@ -612,8 +672,8 @@ class CloudPayments
      *
      * @param string $validationUrl Validation URL for Apple Pay.
      * @param string|null $paymentUrl Payment URL for Apple Pay.
-     * @link https://developers.cloudpayments.ru/en/#start-of-apple-pay-session
      * @return object Response from the CloudPayments API.
+     * @link https://developers.cloudpayments.ru/en/#start-of-apple-pay-session
      */
     public function startApplePaySession(string $validationUrl, string|null $paymentUrl = null): object
     {
@@ -629,8 +689,8 @@ class CloudPayments
      * Sets the localization for the API requests.
      *
      * @param string $cultureName The culture name for localization.
-     * @link https://developers.cloudpayments.ru/en/#localization
      * @return void
+     * @link https://developers.cloudpayments.ru/en/#localization
      */
     public function setLocalization(string $cultureName): void
     {
@@ -655,22 +715,5 @@ class CloudPayments
             "Legs" => $legs,
             "Passengers" => $passengers,
         ];
-    }
-
-    /**
-     * Cancels a payment transaction.
-     *
-     * @param string $transactionId Transaction ID to cancel.
-     * @link https://developers.cloudpayments.ru/en/#payment-cancellation
-     * @return object Response from the CloudPayments API.
-     */
-    public function cancelPayment(string $transactionId): object
-    {
-        $endpoint = '/payments/void';
-        $requestData = [
-            "TransactionId" => $transactionId,
-        ];
-
-        return $this->httpClient->sendRequest($endpoint, $requestData);
     }
 }

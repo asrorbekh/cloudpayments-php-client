@@ -225,7 +225,7 @@ class CloudPayments
      *
      * @param string $transactionId
      * @return object
-     * @link https://developers.cloudpayments.ru/en/#payment-confirmation
+     * @link https://developers.cloudpayments.ru/en/#payment-cancellation
      */
     public function voidPayment(string $transactionId): object
     {

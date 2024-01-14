@@ -46,10 +46,10 @@ class CloudPayments
     private const AUTH_CARD = '/payments/cards/auth';
 
     /**
-     * Capture manual URL for token payment (recurring).
+     * Post 3D secure
      * @const string
      */
-    private const AUTH_TOKEN = '/payments/tokens/auth';
+    private const POST3D_SECURE = '/payments/cards/post3ds';
 
     /**
      * Capture automatic URL for token payment (recurring).
@@ -58,10 +58,10 @@ class CloudPayments
     private const CHARGE_TOKEN = '/payments/tokens/charge';
 
     /**
-     * Post 3D secure
+     * Capture manual URL for token payment (recurring).
      * @const string
      */
-    private const POST3D_SECURE = '/payments/cards/post3ds';
+    private const AUTH_TOKEN = '/payments/tokens/auth';
 
     /**
      * @var string $cultureName
@@ -101,13 +101,12 @@ class CloudPayments
         return $this->httpClient->sendRequest(self::METHOD_TEST, $data);
     }
 
-
     /**
      * Make a one-time payment using card details.
      *
      * @param array|object $cardPaymentData
      * @return object
-     * @link https://developers.cloudpayments.ru/en/#payment-schemes
+     * @link https://developers.cloudpayments.ru/en/#payment-by-a-cryptogram
      */
     public function makeCardPaymentAutomatic(array|object $cardPaymentData): object
     {
@@ -119,7 +118,7 @@ class CloudPayments
      *
      * @param array|object $cardPaymentData
      * @return object
-     * @link https://developers.cloudpayments.ru/en/#payment-schemes
+     * @link https://developers.cloudpayments.ru/en/#payment-by-a-cryptogram
      */
     public function makeCardPaymentManual(array|object $cardPaymentData): object
     {
@@ -132,7 +131,7 @@ class CloudPayments
      * @param array|object $paymentData
      * @param bool $requireConfirmation
      * @return object
-     * @link https://developers.cloudpayments.ru/en/#payment-schemes
+     * @link https://developers.cloudpayments.ru/en/#payment-by-a-cryptogram
      */
     public function makeCardPayment(array|object $paymentData, bool $requireConfirmation = false): object
     {
@@ -148,7 +147,7 @@ class CloudPayments
      *
      * @param array|object $tokenPaymentData
      * @return object
-     * @link https://developers.cloudpayments.ru/en/#payment-schemes
+     * @link https://developers.cloudpayments.ru/en/#payment-by-a-token-recurring
      */
     public function makeTokenPaymentAutomatic(array|object $tokenPaymentData): object
     {
@@ -160,7 +159,7 @@ class CloudPayments
      *
      * @param array|object $tokenPaymentData
      * @return object
-     * @link https://developers.cloudpayments.ru/en/#payment-schemes
+     * @link https://developers.cloudpayments.ru/en/#payment-by-a-token-recurring
      */
     public function makeTokenPaymentManual(array|object $tokenPaymentData): object
     {
@@ -173,7 +172,7 @@ class CloudPayments
      * @param array|object $tokenPaymentData
      * @param bool $requireConfirmation
      * @return object
-     * @link https://developers.cloudpayments.ru/en/#payment-schemes
+     * @link https://developers.cloudpayments.ru/en/#payment-by-a-token-recurring
      */
     public function makeTokenPayment(array|object $tokenPaymentData, bool $requireConfirmation = false): object
     {

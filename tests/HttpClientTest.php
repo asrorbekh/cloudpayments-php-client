@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CloudPaymentsSDK\Tests;
 
 use CloudPaymentsSDK\Http\HttpClient;
+use CloudPaymentsSDK\Http\Response;
 use PHPUnit\Framework\TestCase;
 
 class HttpClientTest extends TestCase
@@ -18,7 +19,7 @@ class HttpClientTest extends TestCase
 
         $result = $httpClient->sendRequest($endpoint, $data, 'GET');
 
-        $this->assertInstanceOf(\stdClass::class, $result);
+        $this->assertInstanceOf(Response::class, $result);
         $this->assertObjectHasProperty('status', $result);
         $this->assertFalse($result->status);
 

@@ -41,11 +41,11 @@ class HttpClient
      * @param array|object|null $data Data to be sent in the request body.
      * @param string $method HTTP method for the request (default is "POST").
      *
-     * @return object Response object with status, data, message, and code.
+     * @return Response Response object with status, data, message, and code.
      */
-    public function sendRequest(?string $url = null, array|object|null $data = null, string $method = "POST"): object
+    public function sendRequest(?string $url = null, array|object|null $data = null, string $method = "POST"): Response
     {
-        $responseObject = new \stdClass();
+        $responseObject = new Response();
         $responseObject->status = false;
         $responseObject->data = null;
 

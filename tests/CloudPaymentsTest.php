@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CloudPaymentsSDK\Tests;
 
 use CloudPaymentsSDK\Client\CloudPayments;
+use CloudPaymentsSDK\Http\Response;
 use PHPUnit\Framework\TestCase;
 
 class CloudPaymentsTest extends TestCase
@@ -29,7 +30,7 @@ class CloudPaymentsTest extends TestCase
 
         $result = $this->cloudPayments->sendTestRequest($testData);
 
-        $this->assertInstanceOf(\stdClass::class, $result);
+        $this->assertInstanceOf(Response::class, $result);
     }
 
 }

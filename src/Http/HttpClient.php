@@ -15,7 +15,7 @@ class HttpClient
      * @var Curl $curl cURL instance for making HTTP requests.
      * @link https://github.com/php-curl-class/php-curl-class
      */
-    private Curl $curl;
+    private ?Curl $curl = null;
 
     /**
      * HttpClient constructor.
@@ -31,7 +31,6 @@ class HttpClient
         private readonly string|null $apiUrl = null,
         private readonly bool|null $enableSSL = true,
     ) {
-        $this->curl = new Curl();
     }
 
     /**
@@ -66,6 +65,7 @@ class HttpClient
                 "User-Agent: $ua",
             ];
 
+            $this->curl = new Curl();
             $this->curl->setOpt(CURLOPT_RETURNTRANSFER, true);
             $this->curl->setOpt(CURLOPT_FOLLOWLOCATION, true);
             $this->curl->setOpt(CURLOPT_SSL_VERIFYHOST, $this->enableSSL ? 2 : 0);
@@ -76,7 +76,9 @@ class HttpClient
             $this->curl->setOpt(CURLOPT_POSTFIELDS, json_encode($data));
             $this->curl->setOpt(CURLOPT_HTTPHEADER, $headers);
 
-            $this->curl->setBasicAuthentication($this->publicKey, $this->apiSecret);
+            if ($this->publicKey && $this->apiSecret) {
+                $this->curl->setBasicAuthentication($this->publicKey, $this->apiSecret);
+            }
 
             $response = $this->curl->exec();
 
@@ -94,7 +96,9 @@ class HttpClient
             $responseObject->message = $exception->getMessage();
             $responseObject->code = $exception->getCode();
         } finally {
-            $this->curl->close();
+            if (isset($this->curl) && $this->curl){
+                $this->curl->close();
+            }
         }
 
         return $responseObject;

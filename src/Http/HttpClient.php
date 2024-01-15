@@ -62,6 +62,7 @@ class HttpClient
 
             $headers = [
                 "Content-Type: application/json",
+                "Accept: application/json",
                 "User-Agent: $ua",
             ];
 

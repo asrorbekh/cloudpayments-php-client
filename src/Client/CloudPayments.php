@@ -5,6 +5,12 @@ declare(strict_types=1);
 namespace CloudPaymentsSDK\Client;
 
 use CloudPaymentsSDK\Http\HttpClient;
+use CloudPaymentsSDK\Http\Response;
+use CloudPaymentsSDK\Model\Cards\CardsModelResponse;
+use CloudPaymentsSDK\Model\Cards\CardsResponse;
+use CloudPaymentsSDK\Model\Cards\Confirm3DResponse;
+use CloudPaymentsSDK\Model\Tokens\TokensModelResponse;
+use CloudPaymentsSDK\Model\Tokens\TokensResponse;
 
 /**
  * Class CloudPayments
@@ -102,85 +108,139 @@ class CloudPayments
     }
 
     /**
-     * Make a one-time payment using card details.
+     * Make a payment using card details.
      *
+     * @param string $paymentEndpoint The API endpoint for the specific payment type
      * @param array|object $cardPaymentData
-     * @return object
+     * @param bool $model
+     * @return string|Confirm3DResponse|CardsResponse|Response
      * @link https://developers.cloudpayments.ru/en/#payment-by-a-cryptogram
      */
-    public function makeCardPaymentAutomatic(array|object $cardPaymentData): object
-    {
-        return $this->httpClient->sendRequest(self::CHARGE_CARD, $cardPaymentData);
+    private function processCardPayment(
+        string $paymentEndpoint,
+        array|object $cardPaymentData,
+        bool $model
+    ): string|Confirm3DResponse|CardsResponse|Response {
+        $response = $this->httpClient->sendRequest($paymentEndpoint, $cardPaymentData);
+
+        if (!$model) {
+            return $response;
+        }
+
+        if ($response->status) {
+            if ($response->data->Message !== null) {
+                return $response->data->Message;
+            }
+            if (!$response->data->Success && (isset($response->data->Model->ReasonCode) && $response->data->Model->ReasonCode > 0)) {
+                return $response->data->Model->CardHolderMessage;
+            }
+            if (isset($response->data->Model->PaReq)) {
+                return new Confirm3DResponse($response->data->Model);
+            }
+
+            $cardsModel = new CardsModelResponse($response->data->Model);
+            return new CardsResponse($cardsModel, $response->data->Success, $response->data->Message);
+        }
+
+        return $response->message;
+    }
+
+    /**
+     * Make a one-time payment using card details.
+     *
+     * @param array|object $cardAutoPaymentData
+     * @param bool $model
+     * @return string|Confirm3DResponse|CardsResponse|Response
+     * @link https://developers.cloudpayments.ru/en/#payment-by-a-cryptogram
+     */
+    public function makeCardPaymentAutomatic(
+        array|object $cardAutoPaymentData,
+        bool $model = false
+    ): string|Confirm3DResponse|CardsResponse|Response {
+        return $this->processCardPayment(self::CHARGE_CARD, $cardAutoPaymentData, $model);
     }
 
     /**
      * Make a two-step payment using card details.
      *
-     * @param array|object $cardPaymentData
-     * @return object
+     * @param array|object $cardManualPaymentData
+     * @param bool $model
+     * @return string|Confirm3DResponse|Response|CardsResponse
      * @link https://developers.cloudpayments.ru/en/#payment-by-a-cryptogram
      */
-    public function makeCardPaymentManual(array|object $cardPaymentData): object
-    {
-        return $this->httpClient->sendRequest(self::AUTH_CARD, $cardPaymentData);
+    public function makeCardPaymentManual(
+        array|object $cardManualPaymentData,
+        bool $model = false
+    ): string|Confirm3DResponse|Response|CardsResponse {
+        return $this->processCardPayment(self::AUTH_CARD, $cardManualPaymentData, $model);
     }
 
     /**
-     * Make a payment using card details.
+     * Make a payment using token details.
      *
-     * @param array|object $paymentData
-     * @param bool $requireConfirmation
-     * @return object
-     * @link https://developers.cloudpayments.ru/en/#payment-by-a-cryptogram
+     * @param string $paymentEndpoint The API endpoint for the specific payment type
+     * @param array|object $tokenPaymentData
+     * @param bool $model
+     * @return string|Confirm3DResponse|TokensResponse|Response
+     * @link https://developers.cloudpayments.ru/en/#payment-by-a-token-recurring
      */
-    public function makeCardPayment(array|object $paymentData, bool $requireConfirmation = false): object
-    {
-        if ($requireConfirmation) {
-            return $this->makeCardPaymentManual($paymentData);
+    private function processTokenPayment(
+        string $paymentEndpoint,
+        array|object $tokenPaymentData,
+        bool $model
+    ): string|Confirm3DResponse|TokensResponse|Response {
+        $response = $this->httpClient->sendRequest($paymentEndpoint, $tokenPaymentData);
+
+        if (!$model) {
+            return $response;
         }
 
-        return $this->makeCardPaymentAutomatic($paymentData);
+        if ($response->status) {
+            if ($response->data->Message !== null) {
+                return $response->data->Message;
+            }
+            if (!$response->data->Success && (isset($response->data->Model->ReasonCode) && $response->data->Model->ReasonCode > 0)) {
+                return $response->data->Model->CardHolderMessage;
+            }
+            if (isset($response->data->Model->PaReq)) {
+                return new Confirm3DResponse($response->data->Model);
+            }
+
+            $cardsModel = new TokensModelResponse($response->data->Model);
+            return new TokensResponse($cardsModel, $response->data->Success, $response->data->Message);
+        }
+
+        return $response->message;
     }
 
     /**
      * Make a one-step payment using a token.
      *
      * @param array|object $tokenPaymentData
-     * @return object
+     * @param bool $model
+     * @return string|TokensResponse|Response
      * @link https://developers.cloudpayments.ru/en/#payment-by-a-token-recurring
      */
-    public function makeTokenPaymentAutomatic(array|object $tokenPaymentData): object
-    {
-        return $this->httpClient->sendRequest(self::CHARGE_TOKEN, $tokenPaymentData);
+    public function makeTokenPaymentAutomatic(
+        array|object $tokenPaymentData,
+        bool $model = false
+    ): string|TokensResponse|Response {
+        return $this->processTokenPayment(self::CHARGE_TOKEN, $tokenPaymentData, $model);
     }
 
     /**
      * Make a two-step payment using a token (recurring).
      *
      * @param array|object $tokenPaymentData
-     * @return object
+     * @param bool $model
+     * @return string|TokensResponse|Response
      * @link https://developers.cloudpayments.ru/en/#payment-by-a-token-recurring
      */
-    public function makeTokenPaymentManual(array|object $tokenPaymentData): object
-    {
-        return $this->httpClient->sendRequest(self::AUTH_TOKEN, $tokenPaymentData);
-    }
-
-    /**
-     * Make a payment using a saved card token.
-     *
-     * @param array|object $tokenPaymentData
-     * @param bool $requireConfirmation
-     * @return object
-     * @link https://developers.cloudpayments.ru/en/#payment-by-a-token-recurring
-     */
-    public function makeTokenPayment(array|object $tokenPaymentData, bool $requireConfirmation = false): object
-    {
-        if ($requireConfirmation) {
-            return $this->makeTokenPaymentManual($tokenPaymentData);
-        }
-
-        return $this->makeTokenPaymentAutomatic($tokenPaymentData);
+    public function makeTokenPaymentManual(
+        array|object $tokenPaymentData,
+        bool $model = false
+    ): string|TokensResponse|Response {
+        return $this->processTokenPayment(self::AUTH_TOKEN, $tokenPaymentData, $model);
     }
 
     /**

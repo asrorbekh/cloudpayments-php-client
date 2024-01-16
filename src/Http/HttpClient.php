@@ -29,7 +29,7 @@ class HttpClient
         private readonly string|null $publicKey = null,
         private readonly string|null $apiSecret = null,
         private readonly string|null $apiUrl = null,
-        private readonly bool|null $enableSSL = true,
+        private readonly bool|null $enableSSL = null,
     ) {
     }
 

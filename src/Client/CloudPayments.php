@@ -755,4 +755,15 @@ class CloudPayments
     {
         $this->cultureName = $cultureName;
     }
+
+    /**
+     * Gets the localization for the API requests.
+     *
+     * @return string
+     * @link https://developers.cloudpayments.ru/en/#localization
+     */
+    public function getLocalization(): string
+    {
+        return $this->cultureName;
+    }
 }

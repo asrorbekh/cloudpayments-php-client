@@ -46,9 +46,9 @@ class TokensModelResponse
     public ?string $AuthCode;
     public ?string $Token;
 
-    public function __construct(object|array $data)
+    public function __construct(object|array $Model)
     {
-        foreach ($data as $key => $value) {
+        foreach ($Model as $key => $value) {
             $this->{$key} = $value;
         }
     }

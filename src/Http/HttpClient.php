@@ -12,7 +12,7 @@ use Curl\Curl;
 class HttpClient
 {
     /**
-     * @var Curl $curl cURL instance for making HTTP requests.
+     * @var Curl|null $curl cURL instance for making HTTP requests.
      * @link https://github.com/php-curl-class/php-curl-class
      */
     private ?Curl $curl = null;

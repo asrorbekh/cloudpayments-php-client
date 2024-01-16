@@ -11,6 +11,7 @@ use CloudPaymentsSDK\Model\Cards\CardsResponse;
 use CloudPaymentsSDK\Model\Cards\Confirm3DResponse;
 use CloudPaymentsSDK\Model\Tokens\TokensModelResponse;
 use CloudPaymentsSDK\Model\Tokens\TokensResponse;
+use CloudPaymentsSDK\Util\Localization;
 
 /**
  * Class CloudPayments
@@ -71,8 +72,9 @@ class CloudPayments
 
     /**
      * @var string $cultureName
+     * @default en-US
      */
-    private string $cultureName;
+    private string $cultureName = Localization::ENGLISH;
 
     /**
      * @var HttpClient $httpClient

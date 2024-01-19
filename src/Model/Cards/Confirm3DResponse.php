@@ -17,9 +17,9 @@ class Confirm3DResponse
     public ?string $ThreeDsCallbackId;
     public ?string $EscrowAccumulationId;
 
-    public function __construct(object|array $data)
+    public function __construct(object|array $Model)
     {
-        foreach ($data as $key => $value) {
+        foreach ($Model as $key => $value) {
             $this->{$key} = $value;
         }
     }

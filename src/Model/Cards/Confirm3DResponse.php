@@ -6,7 +6,7 @@ namespace CloudPaymentsSDK\Model\Cards;
 
 class Confirm3DResponse
 {
-    public ?int $TransactionId;
+    public int $TransactionId;
     public string $PaReq;
     public string $AcsUrl;
     public ?string $GoReq;

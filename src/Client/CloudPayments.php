@@ -93,7 +93,7 @@ class CloudPayments
         string $publicKey,
         string $apiSecret,
         string $apiUrl = self::CLOUD_PAYMENTS_RU_URL,
-        bool $enableSSL = true
+        bool $enableSSL = false
     ) {
         $this->httpClient = new HttpClient($publicKey, $apiSecret, $apiUrl, $enableSSL);
     }

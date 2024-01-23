@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace CloudPaymentsSDK\Client;
 
-use CloudPaymentsSDK\Http\HttpClient;
 use CloudPaymentsSDK\Http\Response;
 use CloudPaymentsSDK\Model\Cards\CardsModelResponse;
 use CloudPaymentsSDK\Model\Cards\CardsResponse;
 use CloudPaymentsSDK\Model\Cards\Confirm3DResponse;
 use CloudPaymentsSDK\Model\Tokens\TokensModelResponse;
 use CloudPaymentsSDK\Model\Tokens\TokensResponse;
-use CloudPaymentsSDK\Util\Localization;
 
 /**
  * Class CloudPayments
@@ -19,95 +17,8 @@ use CloudPaymentsSDK\Util\Localization;
  * @link https://developers.cloudpayments.ru/en/
  * @package CloudPaymentsSDK\Client
  */
-class CloudPayments
+class CloudPayments extends AbstractCloudPayments
 {
-
-    /**
-     * Base url of cloud payments UZ domain
-     * @const string
-     */
-    public const CLOUD_PAYMENTS_UZ_URL = 'https://api.cloudpayments.uz';
-
-    /**
-     * Base url of cloud payments RU domain
-     * @const string
-     */
-    public const CLOUD_PAYMENTS_RU_URL = 'https://api.cloudpayments.ru';
-
-    /**
-     * Test method constant.
-     * @const string
-     */
-    private const METHOD_TEST = '/test';
-
-    /**
-     * Capture automatic URL for onetime payment.
-     * @const string
-     */
-    private const CHARGE_CARD = '/payments/cards/charge';
-
-    /**
-     * Capture manual URL for onetime payment.
-     * @const string
-     */
-    private const AUTH_CARD = '/payments/cards/auth';
-
-    /**
-     * Post 3D secure
-     * @const string
-     */
-    private const POST3D_SECURE = '/payments/cards/post3ds';
-
-    /**
-     * Capture automatic URL for token payment (recurring).
-     * @const string
-     */
-    private const CHARGE_TOKEN = '/payments/tokens/charge';
-
-    /**
-     * Capture manual URL for token payment (recurring).
-     * @const string
-     */
-    private const AUTH_TOKEN = '/payments/tokens/auth';
-
-    /**
-     * @var string $cultureName
-     * @default en-US
-     */
-    private string $cultureName = Localization::ENGLISH;
-
-    /**
-     * @var HttpClient $httpClient
-     */
-    private HttpClient $httpClient;
-
-    /**
-     * CloudPayments constructor.
-     *
-     * @param string $publicKey
-     * @param string $apiSecret
-     * @param string $apiUrl
-     * @param bool $enableSSL
-     */
-    public function __construct(
-        string $publicKey,
-        string $apiSecret,
-        string $apiUrl = self::CLOUD_PAYMENTS_RU_URL,
-        bool $enableSSL = false
-    ) {
-        $this->httpClient = new HttpClient($publicKey, $apiSecret, $apiUrl, $enableSSL);
-    }
-
-    /**
-     * Make a test request
-     *
-     * @param array|object $data
-     * @return object
-     */
-    public function sendTestRequest(array|object $data): object
-    {
-        return $this->httpClient->sendRequest(self::METHOD_TEST, $data);
-    }
 
     /**
      * Make a payment using card details.

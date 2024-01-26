@@ -1,5 +1,6 @@
 {
   "name": "asrorbek/cloudpayments-php-client",
+  "description": "PHP client library for interacting with CloudPayments API",
   "type": "library",
   "license": "MIT",
   "authors": [
